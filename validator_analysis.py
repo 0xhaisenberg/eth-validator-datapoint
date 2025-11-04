@@ -581,18 +581,22 @@ def main():
             unique_results['last_transaction_time']
         ).dt.strftime('%Y-%m-%d %H:%M')
         
-        # Step 6: Check for DEX addresses
-        print("\n6. Checking for DEX addresses...")
-        dune = DuneClient(config.dune_client_api_key)
-        query_result = dune.get_latest_result(5644376)  # ethereum-dex-addresses
+        # Step 6: Check for DEX addresses (COMMENTED OUT - requires paid Dune API)
+        # print("\n6. Checking for DEX addresses...")
+        # dune = DuneClient(config.dune_client_api_key)
+        # query_result = dune.get_latest_result(5644376)  # ethereum-dex-addresses
+        # 
+        # # Extract the rows data from the query_result
+        # rows_data = query_result.result.rows
+        # dex_addresses = pd.DataFrame(rows_data)
+        # 
+        # # Create the is_dex column
+        # unique_results['is_dex'] = unique_results['deposit_address'].isin(dex_addresses['address'])
+        # print(f"Found {unique_results['is_dex'].sum()} DEX addresses")
         
-        # Extract the rows data from the query_result
-        rows_data = query_result.result.rows
-        dex_addresses = pd.DataFrame(rows_data)
-        
-        # Create the is_dex column
-        unique_results['is_dex'] = unique_results['deposit_address'].isin(dex_addresses['address'])
-        print(f"Found {unique_results['is_dex'].sum()} DEX addresses")
+        # Set is_dex to False for all records since DEX checking is disabled
+        unique_results['is_dex'] = False
+        print("DEX checking disabled - all is_dex values set to False")
         
         # Step 7: Merge transaction data back to original DataFrame
         print("\n7. Merging transaction data with validator data...")
